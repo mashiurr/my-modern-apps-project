@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whisker-ingress
+  namespace: calico-system
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"  # optional if not using HTTPS
+spec:
+#  ingressClassName: nginx
+#  ingressClassName: nginx-ingress-lb-oss
+  ingressClassName: nginx-ingress  # <--- Make sure this matches your NGINX ingress controller
+  rules:
+  - host: whisker.mashlab.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: whisker
+            port:
+              number: 8081
