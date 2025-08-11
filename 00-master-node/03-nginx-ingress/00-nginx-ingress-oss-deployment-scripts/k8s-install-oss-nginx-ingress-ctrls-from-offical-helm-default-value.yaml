@@ -1,0 +1,16 @@
+controller:
+  ingressClass:
+    name: nginx
+
+  nginxStatus:
+    enable: true
+
+  service:
+    type: LoadBalancer
+    ports:
+      http: 8080
+      https: 8443
+
+  containerPort:
+    http: 8080
+    https: 8443

@@ -1,0 +1,53 @@
+# k8s-Install NGINX [OSS] Ingress Controller as LoadBalancer (Official Helm) Script as 'nginx-ingress-lb-oss' in 'nginx-ingress-lb-oss' namespce 
+# as Controller Class='nginx-ingress-lb-oss'
+# with Master-Node IP as External LB IPs
+# k8s-Install NGINX [OSS] Ingress Controller (Official Helm) Script
+
+#!/bin/bash
+date
+set -e  # Exit if any command fails
+
+echo "Installation Script of NGINIX-OSS nginx-ingress-controller as LoadBalancer in nginx-ingress-lb-oss namespace with Service Name nginx-ingress-lb-oss"
+echo "as Controller Class=nginx-ingress-lb-oss"
+
+# Step 1: Helm install command
+echo "[INFO] Installing NGINX Ingress Controller OSS (LoadBalancer)..."
+
+helm install nginx-ingress-lb-oss oci://ghcr.io/nginx/charts/nginx-ingress \
+  --version 2.2.1 \
+  --namespace nginx-ingress-lb-oss \
+  --create-namespace \
+  --set controller.service.type=LoadBalancer \
+  --set controller.ingressClass.name=nginx-ingress-lb-oss \
+  --set controller.nginxStatus.enable=true \
+  --set controller.service.externalIPs[0]=10.1.1.4  #<-- Replace with Master's node's external IP 
+#  --set controller.tolerations[0].key=node-role.kubernetes.io/control-plane \
+#  --set controller.tolerations[0].operator=Exists \
+#  --set controller.tolerations[0].effect=NoSchedule \
+#  --set controller.nodeSelector."kubernetes\.io/hostname"=master-node #<-- Replace with Master's node's Host Name
+#  --set controller.service.ports[0].name="http" \
+#  --set controller.service.ports[0].port=31080 \
+#  --set controller.service.ports[0].targetPort=31080 \
+#  --set controller.service.ports[1].name="https" \
+#  --set controller.service.ports[1].port=31443 \
+#  --set controller.service.ports[1].targetPort=31443 \
+#  --set controller.containerPort.http=31080 \
+#  --set controller.containerPort.https=31443
+
+# Step 2: Show status
+echo "[INFO] Waiting for NGINX Ingress pods to be ready..."
+kubectl wait --namespace nginx-ingress-lb-oss \
+  --for=condition=Ready pods \
+  --selector=app.kubernetes.io/name=nginx-ingress \
+  --timeout=120s
+
+# Step 3: Show resources
+echo "[INFO] Deployment complete. Resources in namespace 'nginx-ingress-lb-oss':"
+kubectl get all -n nginx-ingress-lb-oss
+
+
+echo "[Installation Completed !!!] nginx-ingress-lb-oss as LoadBalancer OSS installed in 'nginx-ingress-lb-oss' namespace with Service Name 'nginx-ingress-lb-oss'"
+echo "as Controller Class='nginx-ingress-lb-oss'!"
+
+
+

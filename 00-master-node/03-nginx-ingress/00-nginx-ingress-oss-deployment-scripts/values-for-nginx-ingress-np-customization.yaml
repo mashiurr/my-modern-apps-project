@@ -1,0 +1,31 @@
+controller:
+  ingressClass:
+    name: nginx-ingress
+
+  nginxStatus:
+    enable: true
+
+  service:
+ #   type: LoadBalancer
+     type: NodePort
+   externalIPs:
+      - 10.1.1.4   # <-- Replace with Master's node's external IP
+    ports:
+      - name: http
+        port: 31080
+        targetPort: 31080
+      - name: https
+        port: 31443
+        targetPort: 31443
+
+  containerPort:
+    http: 31080
+    https: 31443
+
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
+
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
