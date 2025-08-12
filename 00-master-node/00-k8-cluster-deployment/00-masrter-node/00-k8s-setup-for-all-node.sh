@@ -63,6 +63,6 @@ sudo sh -c "echo '10.1.1.6 worker02' >> /etc/hosts"
 sudo cat /etc/hosts
 sudo sysctl --system
 
-echo "[STEP 8] Done! Node is ready for Kubernetes v1.33. Please reboot now with by Press Enter for [sudo reboot now] or Press any key to [Cancel]"
-
+echo "[STEP 8] Done! Node is ready for Kubernetes v1.33. Please reboot now with by type [sudo reboot now] and press enter"
+cd /
 kubeadm version
