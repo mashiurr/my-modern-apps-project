@@ -66,14 +66,6 @@ sudo sh -c "echo '10.1.1.4 master-node' >> /etc/hosts" \
 sudo cat /etc/hosts
 sudo sysctl --system
 
-echo "[STEP 8] Done! Node is ready for Kubernetes v1.33. Please reboot now with by Press Enter for [sudo reboot now] or Press any key to [Cancel]"
-
+echo "[STEP 8] Done! Node is ready for Kubernetes v1.33. Please reboot now with by type [sudo reboot now] and press Enter"
+cd /
 kubeadm version
-
-read -p "Press Enter to reboot, or type anything to cancel: " input
-if [[ -z "$input" ]]; then
-    sudo reboot now
-else
-    echo "Reboot cancelled."
-fi
-
