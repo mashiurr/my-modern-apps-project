@@ -1,5 +1,6 @@
 ## k8s-setup for All Node
 #!/bin/bash
+date
 set -e
 
 echo "[STEP 1] Update system"
