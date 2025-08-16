@@ -56,9 +56,11 @@ echo "[STEP 7] Done! Kubernetes v1.33. Installed with kubelet kubeadm kubectl"
 
 echo "[STEP 8] Host Entry All Nodes (master & worker) for Kubernetes Cluster Nodes”
 
-sudo sh -c "echo '10.1.1.4 master-node' >> /etc/hosts"
-sudo sh -c "echo '10.1.1.5 worker01' >> /etc/hosts"
-sudo sh -c "echo '10.1.1.6 worker02' >> /etc/hosts" 
+sudo tee -a /etc/hosts > /dev/null <<EOL
+10.1.1.4 master-node
+10.1.1.5 worker01
+10.1.1.6 worker02
+EOL
 
 sudo cat /etc/hosts
 sudo sysctl --system
