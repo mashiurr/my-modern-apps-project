@@ -5,9 +5,6 @@ set -e
 echo "[STEP 1] Update system"
 sudo apt update && sudo apt upgrade -y
 
-echo "[STEP 1] Update system"
-sudo apt update && sudo apt upgrade -y
-
 echo "[STEP 2] Disable swap"
 sudo swapoff -a
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
