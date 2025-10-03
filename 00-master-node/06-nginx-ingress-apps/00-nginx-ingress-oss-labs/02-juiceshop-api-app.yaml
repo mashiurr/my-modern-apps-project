@@ -1,0 +1,67 @@
+# Juiceshop API App  Yaml:
+# 1. Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: juice-shop
+
+---
+# 2. Deployment for JuiceShop API App in K8s
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: juice-shop
+  namespace: juice-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: juice-shop
+  template:
+    metadata:
+      labels:
+        app: juice-shop
+    spec:
+      containers:
+      - name: juice-shop
+        image: bkimminich/juice-shop
+        ports:
+        - containerPort: 3000
+
+---
+# 3. NodePort Service to Expose It
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: juice-shop
+  namespace: juice-shop
+spec:
+  selector:
+    app: juice-shop
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 3000
+
+---
+# 4. Ingress Resource for http://juice.mashlab,.com
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: juice-shop-ingress
+  namespace: juice-shop
+  annotations:
+    spec.ingressClassName: "nginx-ingress"
+spec:
+  rules:
+  - host: juice.mashlab.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: juice-shop
+            port:
+              number: 80

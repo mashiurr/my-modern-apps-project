@@ -1,0 +1,52 @@
+#---arcadia-mainapp---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: main
+  namespace: arcadia
+  labels:
+    app: main
+spec:
+  type: NodePort
+  ports:
+    - name: main-80
+      nodePort: 30511
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: main
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+  namespace: arcadia
+  labels:
+    app: main
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: main
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: main
+        version: v1
+    spec:
+      containers:
+        - name: main
+          image: registry.gitlab.com/arcadia-application/main-app/mainapp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: service_name
+              value: main
+---
+

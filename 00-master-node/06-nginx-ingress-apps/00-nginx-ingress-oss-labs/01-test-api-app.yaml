@@ -1,0 +1,71 @@
+# test-api-app.yaml
+
+# 1. Namespace (skip if already created)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-ingress
+
+# 2. Deployment for Test API (simple Python HTTP API) HashiCorp-Test Echo API Deployment (minimal test echo api app)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-api
+  namespace: nginx-ingress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-api
+  template:
+    metadata:
+      labels:
+        app: test-api
+    spec:
+      containers:
+      - name: api
+        image: hashicorp/http-echo
+        args:
+          - "-listen=:8080"
+          - "-text=Hello from Test API"
+        ports:
+        - containerPort: 8080
+
+---
+# 3. NodePort Service to Expose It
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-api
+  namespace: nginx-ingress
+spec:
+  selector:
+    app: test-api
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8080
+#    nodePort: 30084  # Optional: static NodePort in range 30000-32767
+
+---
+# 4. Ingress for http://api.mashlab,.com
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-api-ingress
+  namespace: nginx-ingress
+  annotations:
+     spec.ingressClassName: "nginx-ingress"
+#    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: api.mashlab.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: test-api
+            port:
+              number: 80

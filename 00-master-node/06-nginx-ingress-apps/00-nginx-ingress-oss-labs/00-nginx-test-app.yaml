@@ -1,0 +1,69 @@
+# nginx-test-app.yaml
+
+# 1. Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-ingress
+
+---
+# 2. NGINX Test Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-nginx-app
+  namespace: nginx-ingress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-nginx-app
+  template:
+    metadata:
+      labels:
+        app: test-nginx-app
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+---
+# 3. NodePort Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-nginx-app
+  namespace: nginx-ingress
+spec:
+  type: NodePort
+  selector:
+    app: test-nginx-app
+  ports:
+  - port: 80
+    targetPort: 80
+#    nodePort: 30080  # Optional: static port, must be in range 30000–32767
+
+---
+# 4. Ingress Resource
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-nginx-ingress
+  namespace: nginx-ingress
+  annotations:
+     spec.ingressClassName: "nginx-ingress"
+#    kubernetes.io/ingress.class: "nginx"  # IngressClass reference
+spec:
+  rules:
+  - host: test.mashlab.com      # Change this to your desired domain or IP-based access
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: test-nginx-app
+            port:
+              number: 80

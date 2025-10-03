@@ -1,0 +1,24 @@
+# NGINX-Ingress NodePort Service Expose for Cafe Coffee & Tea App HTTPS in nginx-ingress namespace“04-lab-1-nginx-ingress-namespace-cafe-nodeport-path-route.yaml“
+apiVersion: v1
+kind: Service
+metadata:
+  name: cafe-nginx-ingress-nodeport
+  namespace: nginx-ingress
+spec:
+  type: NodePort
+  externalIPs:
+  - 10.1.1.4
+  selector:
+    app.kubernetes.io/name: nginx-ingress
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    nodePort: 31080
+  - name: https
+    port: 443
+    targetPort: 443
+    nodePort: 31443
+
+---
+

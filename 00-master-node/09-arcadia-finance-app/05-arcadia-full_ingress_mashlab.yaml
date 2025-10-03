@@ -1,0 +1,42 @@
+# ---Ingress Resource for http://arcadia.mashlab.com---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: arcadia-ingress
+  namespace: arcadia
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: arcadia.mashlab.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: main
+                port:
+                  number: 80
+          - path: /files
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 80
+          - path: /api
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: app2
+                port:
+                  number: 80
+          - path: /app3
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: app3
+                port:
+                  number: 80
