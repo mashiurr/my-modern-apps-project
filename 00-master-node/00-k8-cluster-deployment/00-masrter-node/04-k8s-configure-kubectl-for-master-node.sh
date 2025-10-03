@@ -4,7 +4,7 @@ set -e
 
 # k8s-Configure kubectl for Master Node
 # Pause before next step
-read -p "Press [Enter] to continue to STEP 1:"
+read -p "Press [Enter] to continue to [STEP 1] k8s-Configure kubectl for master-node..."
 echo "[STEP 1] k8s-Configure kubectl for master-node" 
 
 mkdir -p $HOME/.kube
