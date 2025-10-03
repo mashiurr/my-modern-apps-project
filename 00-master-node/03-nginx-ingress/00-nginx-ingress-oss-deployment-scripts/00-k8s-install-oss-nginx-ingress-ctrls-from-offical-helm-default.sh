@@ -7,6 +7,10 @@
 date
 set -e  # Exit if any command fails
 
+
+# Pause before next step
+read -p "Press [Enter] to continue to [Step 1] Installation Script of NGINIX-OSS nginx-ingress-controller as LoadBalancer in default namespace with Service Name nginx-ingress..."
+
 echo "Installation Script of NGINIX-OSS nginx-ingress-controller as LoadBalancer in default namespace with Service Name nginx-ingress"
 echo "as Controller Class=nginx"
 
