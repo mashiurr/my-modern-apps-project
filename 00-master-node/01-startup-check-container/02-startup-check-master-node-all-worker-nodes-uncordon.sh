@@ -4,12 +4,16 @@ echo "This Start-up Check for Master Node to Uncordon all the Worker Nodes"
 date
 set -e
 
+# Pause before next step
+read -p "Press [Enter] to continue to [STEP 1] Uncordong K8-Worker-01 & K8-Worker-02 Nodes"
 echo "Uncordong K8-Worker-01 Node"
 kubectl uncordon worker01
 
 echo "Uncordong K8-Worker-02 Node"
 kubectl uncordon worker02
 
+# Pause before next step
+read -p "Press [Enter] to continue to [STEP 2] Check All Node status in Kubernetes Cluster"
 echo "Check All Node status in Kubernetes Cluster"
 kubectl get nodes -o wide
 
@@ -27,6 +31,8 @@ kubectl get componentstatuses
 
 #echo "Check for any pods in CrashLoopBackOff or Error states in Kubernetes Cluster"
 #kubectl get pods --all-namespaces | grep -E "CrashLoopBackOff|Error|Pending| Terminating"
+# Pause before next step
+read -p "Press [Enter] to continue to [STEP 3] Verify All the pods, Services, namespaces are running in Watch mode"
 
 echo "Verify All the pods, Services, namespaces are running in Watch mode"
 watch kubectl get nodes,namespace,pods,svc,ingress,secret -A
