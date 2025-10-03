@@ -6,10 +6,16 @@ set -e
 echo "[STEP 1] Update system"
 sudo apt update && sudo apt upgrade -y
 
+# Pause before next step
+read -p "Press [Enter] to continue to STEP 2: Disable swap..."
+
 echo "[STEP 2] Disable swap"
 sudo swapoff -a
 
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
+
+# Pause before next step
+read -p "Press [Enter] to continue to STEP 3 Load kernel modules..."
 
 echo "[STEP 3] Load kernel modules"
 sudo modprobe overlay
