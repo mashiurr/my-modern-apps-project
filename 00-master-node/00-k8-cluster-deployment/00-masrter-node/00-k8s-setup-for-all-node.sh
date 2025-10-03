@@ -27,6 +27,9 @@ overlay
 br_netfilter
 EOF
 
+# Pause before next step
+read -p "Press [Enter] to continue to STEP 4: Set sysctl params for Kubernetes..."
+
 echo "[STEP 4] Set sysctl params for Kubernetes"
 
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
@@ -36,6 +39,9 @@ net.ipv4.ip_forward                 = 1
 EOF
 
 sudo sysctl --system
+
+# Pause before next step
+read -p "Press [Enter] to continue to STEP 5: Install containerd..."
 
 echo "[STEP 5] Install containerd"
 
@@ -62,6 +68,10 @@ sudo systemctl restart containerd
 
 sudo systemctl enable containerd
 
+# Pause before next step
+read -p "Press [Enter] to continue to STEP 6: Install Kubernetes v1.33 from official repo..."
+
+
 echo "[STEP 6] Install Kubernetes v1.33 from official repo"
 sudo mkdir -p /etc/apt/keyrings
 
@@ -77,6 +87,9 @@ sudo apt update
 sudo apt install -y kubelet kubeadm kubectl
 
 sudo apt-mark hold kubelet kubeadm kubectl
+
+# Pause before next step
+read -p "Press [Enter] to continue to STEP 7: Done! Kubernetes v1.33. Installed with kubelet kubeadm kubectl"..."
 
 echo "[STEP 7] Done! Kubernetes v1.33. Installed with kubelet kubeadm kubectl"
 
