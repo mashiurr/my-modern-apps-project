@@ -15,24 +15,6 @@ spec:
       labels:
         app: coffee
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - worker01
-                - worker02
-      topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            app: coffee
-    spec:
       containers:
       - name: coffee
         image: nginxdemos/nginx-hello:plain-text
@@ -71,25 +53,7 @@ spec:
     metadata:
       labels:
         app: tea
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - worker01
-                - worker02
-      topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            app: tea
-    spec:
+      spec:
       containers:
       - name: tea
         image: nginxdemos/nginx-hello:plain-text
