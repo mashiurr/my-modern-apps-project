@@ -1,4 +1,4 @@
-#Cafe App Coffe & Tea Service – NGIX Ingress Resource - NodePort Service  YAML as Path-based Routing) “03-lab-1-cafe-ingress-namespace-nodeport-path-route.yaml”
+#Cafe App Coffe & Tea Service – NGINX Ingress Resource - NodePort Service  YAML as Path-based Routing) “03-lab-1-cafe-ingress-namespace-nodeport-path-route.yaml”
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
