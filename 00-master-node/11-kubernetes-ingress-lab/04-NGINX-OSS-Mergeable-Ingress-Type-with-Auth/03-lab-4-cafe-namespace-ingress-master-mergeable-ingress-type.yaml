@@ -1,0 +1,16 @@
+#cafe-app-master as nginx mergeable-ingress-type
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cafe-ingress-master
+  namespace: nginx-ingress
+  annotations:
+    nginx.org/mergeable-ingress-type: "master" # For NGINX Plus Ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - cafe.mashlab.com
+    secretName: cafe-secret-namespace
+  rules:
+  - host: cafe.mashlab.com

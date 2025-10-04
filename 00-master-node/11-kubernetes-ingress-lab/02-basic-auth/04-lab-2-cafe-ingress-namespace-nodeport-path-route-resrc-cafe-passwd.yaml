@@ -1,0 +1,39 @@
+#Cafe App Coffe & Tea Service – NGIX Ingress Resource - NodePort Service  YAML as Path-based Routing) with Basic Auth Resource "cafe-passwd" as "annotation"
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cafe-ingress
+  namespace: cafe
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+#    nginx.org/basic-auth-secret: "cafe-passwd" #For NGINX Plus Ingress Controller
+#    nginx.org/basic-auth-realm: "Auth Required Cafe App" #For NGINX Plus Ingress Controller
+    nginx.ingress.kubernetes.io/auth-type: basic # #For NGINX OSS Ingress Controller
+    nginx.ingress.kubernetes.io/auth-secret: cafe-passwd # #For NGINX OSS Ingress Controller
+    nginx.ingress.kubernetes.io/auth-realm: "Auth Required Cafe App" # #For NGINX OSS Ingress Controller
+
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - cafe.mashlab.com
+    secretName: cafe-secret-namespace
+  rules:
+  - host: cafe.mashlab.com
+    http:
+      paths:
+      - path: /coffee
+        pathType: Prefix
+        backend:
+          service:
+            name: coffee-svc
+            port:
+              number: 80
+      - path: /tea
+        pathType: Prefix
+        backend:
+          service:
+            name: tea-svc
+            port:
+              number: 80

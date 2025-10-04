@@ -1,0 +1,19 @@
+# cafe app tea Service as ingress per-path route type with basic auth
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tea-ingress
+  namespace: cafe
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: cafe.mashlab.com
+    http:
+      paths:
+      - path: /tea
+        pathType: Prefix
+        backend:
+          service:
+            name: tea-svc
+            port:
+              number: 80

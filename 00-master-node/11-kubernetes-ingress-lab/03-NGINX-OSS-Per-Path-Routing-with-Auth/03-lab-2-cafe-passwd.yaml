@@ -1,0 +1,12 @@
+#Cafe-passwd Secret for Basic htpasswd Authentication
+
+kind: Secret
+metadata:
+  name: cafe-passwd
+  namespace: cafe
+apiVersion: v1
+type: nginx.org/htpasswd
+stringData:
+  htpasswd: |
+    foo: Zm9vOiQyeSQwNSRna29hUTRKUC9XMzhtUi43enFFd3NPeDQwa00wWlhQZFVXdGVsNW4xZWRpYlRiRmFwMGdEVwo=
+  # bar

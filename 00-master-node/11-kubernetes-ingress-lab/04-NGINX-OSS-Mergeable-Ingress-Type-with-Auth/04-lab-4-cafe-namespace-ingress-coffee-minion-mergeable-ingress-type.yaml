@@ -1,0 +1,23 @@
+#coffee-minion as nginx mergeable-ingress-type with basic authentication
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cafe-ingress-coffee-minion
+  name: nginx-ingress
+  annotations:
+    nginx.org/mergeable-ingress-type: "minion" # For NGINX Plus Ingress
+    nginx.org/basic-auth-secret: "coffee-passwd" # For NGINX Plus Ingress
+    nginx.org/basic-auth-realm: "Coffee" # For NGINX Plus Ingress
+
+spec:
+  rules:
+  - host: cafe.mashlab.com
+    http:
+      paths:
+      - path: /coffee
+        pathType: Prefix
+        backend:
+          service:
+            name: coffee-svc
+            port:
+              number: 80
